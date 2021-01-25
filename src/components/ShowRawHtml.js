@@ -28,7 +28,8 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 	const [result, setResult] = useState();
 	const [fileInner, setFileInner] = useState();
 	const [copied, setCopied] = useState(false);
-	const [downloaded, setDownloaded] = useState(false);
+	const [htmlDownloaded, setHtmlDownloaded] = useState(false);
+	const [mdDownloaded, setMdDownloaded] = useState(false);
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -38,17 +39,32 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 		setOpen(false);
 	};
 
-	const handleDownload = () => {
+	const handleHtmlDownload = () => {
 		const element = document.createElement("a");
 		const file = new Blob([fileInner], { type: "text/html" });
 		element.href = URL.createObjectURL(file);
 		element.download = "index.html";
 		document.body.appendChild(element); // Required for this to work in FireFox
 		element.click();
-		setDownloaded(true);
+		setHtmlDownloaded(true);
+	};
+
+	const handleMdDownload = () => {
+		const element = document.createElement("a");
+		const file = new Blob([markdownToParse], { type: "text/markdnwo" });
+		element.href = URL.createObjectURL(file);
+		element.download = "document.md";
+		document.body.appendChild(element); // Required for this to work in FireFox
+		element.click();
+		setMdDownloaded(true);
 	};
 
 	useEffect(() => {
+		const parsed = micromark(markdownToParse, {
+			extensions: [gfmSyntax()],
+			htmlExtensions: [gfmHtml],
+		});
+
 		const res = markdownToParse
 			? `<!DOCTYPE html>
 <html lang="en">
@@ -58,10 +74,7 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 		<title>Document</title>
 	</head>
 	<body>
-		${micromark(markdownToParse, {
-			extensions: [gfmSyntax()],
-			htmlExtensions: [gfmHtml],
-		})}
+		${parsed}
 	</body>
 </html>`
 			: `Start by typing in the text box on the right.\nUse the cheat sheet if you need to!`;
@@ -69,14 +82,16 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 		setResult(`\`\`\`html
 ${res}
 \`\`\``);
+
 		setCopied(false);
-		setDownloaded(false);
+		setHtmlDownloaded(false);
+		setMdDownloaded(false);
 	}, [markdownToParse]);
 
 	return (
 		<>
 			<Button color="inherit" onClick={handleOpen}>
-				Raw HTML
+				Show Raw File
 			</Button>
 			<div>
 				<Modal className={classes.modal} open={open} onClose={handleClose}>
@@ -110,15 +125,29 @@ ${res}
 								<Button
 									color="secondary"
 									variant="contained"
-									disabled={downloaded ? true : false}
-									onClick={handleDownload}
+									disabled={htmlDownloaded ? true : false}
+									onClick={handleHtmlDownload}
 								>
-									{downloaded ? (
+									{htmlDownloaded ? (
 										<>
-											Downloaded <DoneIcon />
+											.html Downloaded <DoneIcon />
 										</>
 									) : (
-										"Download File"
+										"Download as .html"
+									)}
+								</Button>
+								<Button
+									color="secondary"
+									variant="contained"
+									disabled={mdDownloaded ? true : false}
+									onClick={handleMdDownload}
+								>
+									{mdDownloaded ? (
+										<>
+											.md Downloaded <DoneIcon />
+										</>
+									) : (
+										"Download as .md"
 									)}
 								</Button>
 							</CardActions>
