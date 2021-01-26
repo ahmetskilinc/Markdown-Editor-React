@@ -1,5 +1,17 @@
 import React, { useEffect } from "react";
-import { Button, Modal, Card, CardContent, CardActions, CardHeader, IconButton } from "@material-ui/core";
+import {
+	Button,
+	Modal,
+	Card,
+	CardContent,
+	CardActions,
+	CardHeader,
+	IconButton,
+	Select,
+	FormControl,
+	InputLabel,
+	MenuItem,
+} from "@material-ui/core";
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -28,8 +40,8 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 	const [result, setResult] = useState();
 	const [fileInner, setFileInner] = useState();
 	const [copied, setCopied] = useState(false);
-	const [htmlDownloaded, setHtmlDownloaded] = useState(false);
-	const [mdDownloaded, setMdDownloaded] = useState(false);
+	const [downloaded, setDownloaded] = useState(false);
+	const [fileType, setFileType] = useState("");
 
 	const handleOpen = () => {
 		setOpen(true);
@@ -39,24 +51,20 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 		setOpen(false);
 	};
 
-	const handleHtmlDownload = () => {
+	const handleDownload = () => {
+		let x;
+		if (fileType === "html") {
+			x = fileInner;
+		} else if (fileType === "md") {
+			x = markdownToParse;
+		}
 		const element = document.createElement("a");
-		const file = new Blob([fileInner], { type: "text/html" });
+		const file = new Blob([x], { type: `text/${fileType}` });
 		element.href = URL.createObjectURL(file);
-		element.download = "index.html";
+		element.download = `index.${fileType}`;
 		document.body.appendChild(element); // Required for this to work in FireFox
 		element.click();
-		setHtmlDownloaded(true);
-	};
-
-	const handleMdDownload = () => {
-		const element = document.createElement("a");
-		const file = new Blob([markdownToParse], { type: "text/markdnwo" });
-		element.href = URL.createObjectURL(file);
-		element.download = "document.md";
-		document.body.appendChild(element); // Required for this to work in FireFox
-		element.click();
-		setMdDownloaded(true);
+		setDownloaded(true);
 	};
 
 	useEffect(() => {
@@ -74,7 +82,7 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 		<title>Document</title>
 	</head>
 	<body>
-		${parsed}
+		${parsed} 
 	</body>
 </html>`
 			: `Start by typing in the text box on the right.\nUse the cheat sheet if you need to!`;
@@ -84,9 +92,14 @@ ${res}
 \`\`\``);
 
 		setCopied(false);
-		setHtmlDownloaded(false);
-		setMdDownloaded(false);
+		setDownloaded(false);
 	}, [markdownToParse]);
+
+	const changeFileType = (event) => {
+		setFileType(event.target.value);
+		setCopied(false);
+		setDownloaded(false);
+	};
 
 	return (
 		<>
@@ -102,54 +115,48 @@ ${res}
 									<CancelIcon />
 								</IconButton>
 							}
-							title="Raw HTML"
+							title="Raw File"
 						/>
 						<CardContent style={{ padding: markdownToParse.length < 1 ? "16px" : "0 16px" }}>
-							{<MarkdownViewer content={result} lineNumbers={false} />}
+							<MarkdownViewer
+								content={fileType === "html" ? result : markdownToParse}
+								lineNumbers={false}
+							/>
 						</CardContent>
 						{markdownToParse.length < 1 ? (
 							""
 						) : (
 							<CardActions style={{ padding: "16px" }}>
-								<CopyToClipboard text={fileInner} onCopy={() => setCopied(true)}>
+								<FormControl style={{ width: 120 }} variant="outlined" className={classes.formControl}>
+									<InputLabel id="select-label">Download As</InputLabel>
+									<Select
+										labelId="select-label"
+										value={fileType}
+										onChange={changeFileType}
+										label="Download as"
+									>
+										<MenuItem value={"html"}>.html</MenuItem>
+										<MenuItem value={"md"}>.md</MenuItem>
+									</Select>
+								</FormControl>
+								<CopyToClipboard
+									text={fileType === "html" ? fileInner : markdownToParse}
+									onCopy={() => setCopied(true)}
+								>
 									<Button color="secondary" variant="contained" disabled={copied ? true : false}>
-										{copied ? (
-											<>
-												Copied <DoneIcon />
-											</>
-										) : (
-											"Copy"
-										)}
+										Copy
 									</Button>
 								</CopyToClipboard>
+								{copied ? <DoneIcon /> : ""}
 								<Button
 									color="secondary"
 									variant="contained"
-									disabled={htmlDownloaded ? true : false}
-									onClick={handleHtmlDownload}
+									disabled={downloaded ? true : false}
+									onClick={handleDownload}
 								>
-									{htmlDownloaded ? (
-										<>
-											.html Downloaded <DoneIcon />
-										</>
-									) : (
-										"Download as .html"
-									)}
+									Download File
 								</Button>
-								<Button
-									color="secondary"
-									variant="contained"
-									disabled={mdDownloaded ? true : false}
-									onClick={handleMdDownload}
-								>
-									{mdDownloaded ? (
-										<>
-											.md Downloaded <DoneIcon />
-										</>
-									) : (
-										"Download as .md"
-									)}
-								</Button>
+								{downloaded ? <DoneIcon /> : ""}
 							</CardActions>
 						)}
 					</Card>

@@ -7,3 +7,4 @@ Todo:
 -   [x] Copy to clipboard
 -   [x] Download as .html
 -   [x] Download as .md
+-   [ ] Add dropdown to select filetype!
