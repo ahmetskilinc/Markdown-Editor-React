@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme) => ({
 	table: {
 		backgroundColor: "blue",
 	},
+	zeroPaddingMargin: {
+		padding: 0,
+		margin: 0,
+	},
 }));
 
 function createData(name, calories, fat, carbs, protein) {
@@ -78,19 +82,41 @@ export const CheatSheet = () => {
 								<Table>
 									<TableHead>
 										<TableRow>
-											<TableCell>Dessert (100g serving)</TableCell>
-											<TableCell align="right">Calories</TableCell>
+											<TableCell>Exmaple</TableCell>
+											<TableCell>Markdown</TableCell>
 										</TableRow>
 									</TableHead>
 									<TableBody>
-										{rows.map((row) => (
-											<TableRow key={row.name}>
-												<TableCell component="th" scope="row">
-													{row.name}
-												</TableCell>
-												<TableCell align="right">{row.calories}</TableCell>
-											</TableRow>
-										))}
+										<TableRow>
+											<TableCell>
+												<h1 className={classes.zeroPaddingMargin}>Heading 1</h1>
+												<h2 className={classes.zeroPaddingMargin}>Heading 2</h2>
+												<h3 className={classes.zeroPaddingMargin}>Heading 3</h3>
+												<h4 className={classes.zeroPaddingMargin}>Heading 4</h4>
+											</TableCell>
+											<TableCell>
+												<p className={classes.zeroPaddingMargin}># Heading 1</p>
+												<p className={classes.zeroPaddingMargin}>## Heading 2</p>
+												<p className={classes.zeroPaddingMargin}>### Heading 3</p>
+												<p className={classes.zeroPaddingMargin}>#### Heading 4</p>
+											</TableCell>
+										</TableRow>
+										<TableRow>
+											<TableCell>
+												<a href="https://google.com/" className={classes.zeroPaddingMargin}>
+													I'm an inline-style link
+												</a>
+												<a href="https://google.com/" className={classes.zeroPaddingMargin}>
+													I'm an inline-style link
+												</a>
+											</TableCell>
+											<TableCell>
+												<p className={classes.zeroPaddingMargin}>
+													[I'm an inline-style link](https://www.google.com)
+												</p>
+												<p className={classes.zeroPaddingMargin}></p>
+											</TableCell>
+										</TableRow>
 									</TableBody>
 								</Table>
 							</TableContainer>
@@ -101,3 +127,12 @@ export const CheatSheet = () => {
 		</>
 	);
 };
+
+/**
+ *
+[I'm an inline-style link](https://www.google.com)
+
+[I'm an inline-style link with title](https://www.google.com "Google's Homepage")
+
+[I'm a reference-style link][Arbitrary case-insensitive reference text]
+ */

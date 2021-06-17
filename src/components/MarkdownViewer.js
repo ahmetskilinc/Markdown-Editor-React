@@ -3,7 +3,16 @@ import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { TableContainer, Table, TableHead, Paper, TableRow, TableCell, Typography, TableBody } from "@material-ui/core";
+import {
+	TableContainer,
+	Table,
+	TableHead,
+	Paper,
+	TableRow,
+	TableCell,
+	Typography,
+	TableBody,
+} from "@material-ui/core";
 
 export const MarkdownViewer = ({ content, lineNumbers }) => {
 	const renderers = {
@@ -37,7 +46,6 @@ export const MarkdownViewer = ({ content, lineNumbers }) => {
 			renderers={renderers}
 			plugins={[gfm]}
 			children={content}
-			allowDangerousHtml
 		/>
 	);
 };

@@ -117,7 +117,7 @@ ${res}
 							}
 							title="Raw File"
 						/>
-						<CardContent style={{ padding: markdownToParse.length < 1 ? "16px" : "0 16px" }}>
+						<CardContent style={{ padding: markdownToParse.length < 0 ? "16px" : "0 16px" }}>
 							<MarkdownViewer
 								content={fileType === "html" ? result : markdownToParse}
 								lineNumbers={false}
@@ -127,7 +127,11 @@ ${res}
 							""
 						) : (
 							<CardActions style={{ padding: "16px" }}>
-								<FormControl style={{ width: 120 }} variant="outlined" className={classes.formControl}>
+								<FormControl
+									style={{ width: 120 }}
+									variant="outlined"
+									className={classes.formControl}
+								>
 									<InputLabel id="select-label">Download As</InputLabel>
 									<Select
 										labelId="select-label"
@@ -143,7 +147,11 @@ ${res}
 									text={fileType === "html" ? fileInner : markdownToParse}
 									onCopy={() => setCopied(true)}
 								>
-									<Button color="secondary" variant="contained" disabled={copied ? true : false}>
+									<Button
+										color="secondary"
+										variant="contained"
+										disabled={copied ? true : false}
+									>
 										Copy
 									</Button>
 								</CopyToClipboard>

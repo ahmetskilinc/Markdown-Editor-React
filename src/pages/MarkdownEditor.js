@@ -6,8 +6,8 @@ export const MarkdownEditor = ({ markdownToParse }) => {
 	const [markdown, setMarkdown] = useState(``);
 
 	const handleChange = (e) => {
-		setMarkdown(e.target.value);
-		markdownToParse(e.target.value);
+		setMarkdown(e);
+		markdownToParse(e);
 	};
 
 	return (
