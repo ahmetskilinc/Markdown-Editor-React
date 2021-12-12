@@ -1,19 +1,15 @@
-import React, { useState } from "react";
-import { Navbar } from "./components";
-import { MarkdownEditor } from "./pages";
+import React from "react";
+import { MarkdownEditor, Sheets } from "./pages";
+import { Route, BrowserRouter, Routes } from "react-router-dom";
 import "./App.css";
 
 export const App = () => {
-	const [markdownToParse, setMarkdownToParse] = useState(``);
-
-	const handleMarkdownToParse = (x) => {
-		setMarkdownToParse(x);
-	};
-
 	return (
-		<>
-			<Navbar markdownToParse={markdownToParse} />
-			<MarkdownEditor markdownToParse={handleMarkdownToParse} />
-		</>
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<Sheets />} />
+				<Route path="/editor/:id" element={<MarkdownEditor />} />
+			</Routes>
+		</BrowserRouter>
 	);
 };

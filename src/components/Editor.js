@@ -1,6 +1,9 @@
-import React, { useState, useRef } from "react";
-import { Divider, IconButton, makeStyles, Toolbar } from "@material-ui/core";
-
+import React, { useState, useRef, useEffect } from "react";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import makeStyles from "@material-ui/core/styles/makeStyles";
+import Toolbar from "@material-ui/core/Toolbar";
+import Button from "@material-ui/core/Button";
 import FormatBoldRoundedIcon from "@material-ui/icons/FormatBoldRounded";
 import FormatItalicRoundedIcon from "@material-ui/icons/FormatItalicRounded";
 import StrikethroughSRoundedIcon from "@material-ui/icons/StrikethroughSRounded";
@@ -28,21 +31,20 @@ const useStyles = makeStyles(() => ({
 			margin: "0 3px",
 		},
 	},
+	openButton: {
+		width: "22px",
+	},
 }));
 
 export const Editor = ({ handleChange }) => {
-	const [hidden, setHidden] = useState(true);
+	const [hidden, setHidden] = useState(false);
 	const [textAreaValue, setTextAreaValue] = useState(``);
 	const textArea = useRef();
 	const classes = useStyles();
 
 	const handleToggleEditor = () => {
-		if (hidden === true) {
-			setTextAreaValue(textArea.current.value);
-			setHidden(false);
-		} else {
-			setHidden(true);
-		}
+		if (!hidden) setTextAreaValue(`${textArea.current.value}`);
+		setHidden(!hidden);
 	};
 
 	const getTextToInsert = (type, text) => {
@@ -62,8 +64,14 @@ export const Editor = ({ handleChange }) => {
 		const start = textArea.current.selectionStart;
 		const finish = textArea.current.selectionEnd;
 		var newValue;
-		let textBeforeCursorPosition = textArea.current.value.substring(0, start);
-		let textAfterCursorPosition = textArea.current.value.substring(finish, textArea.current.value.length);
+		let textBeforeCursorPosition = textArea.current.value.substring(
+			0,
+			start
+		);
+		let textAfterCursorPosition = textArea.current.value.substring(
+			finish,
+			textArea.current.value.length
+		);
 		newValue = `${textBeforeCursorPosition}${getTextToInsert(
 			type,
 			getSelText(start, finish)
@@ -77,10 +85,14 @@ export const Editor = ({ handleChange }) => {
 		return sel.toString();
 	}
 
-	return !hidden ? (
-		<IconButton size="small" onClick={() => handleToggleEditor()}>
+	return hidden ? (
+		<Button
+			size="small"
+			className={classes.openButton}
+			onClick={() => handleToggleEditor()}
+		>
 			<ArrowBackIosRoundedIcon />
-		</IconButton>
+		</Button>
 	) : (
 		<div className="textarea-container">
 			<Toolbar variant="dense" className={classes.toolbar}>
@@ -90,11 +102,17 @@ export const Editor = ({ handleChange }) => {
 				<IconButton size="small" onClick={() => insertMyText("italic")}>
 					<FormatItalicRoundedIcon />
 				</IconButton>
-				<IconButton size="small" onClick={() => insertMyText("strikethrough")}>
+				<IconButton
+					size="small"
+					onClick={() => insertMyText("strikethrough")}
+				>
 					<StrikethroughSRoundedIcon />
 				</IconButton>
 				<Divider orientation="vertical" flexItem />
-				<IconButton size="small" onClick={() => insertMyText("checkbox")}>
+				<IconButton
+					size="small"
+					onClick={() => insertMyText("checkbox")}
+				>
 					<CheckBoxIcon />
 				</IconButton>
 				<Divider orientation="vertical" flexItem />
@@ -109,7 +127,7 @@ export const Editor = ({ handleChange }) => {
 				</IconButton>
 				<Divider orientation="vertical" flexItem />
 				<span></span>
-				<IconButton size="small" onClick={() => handleToggleEditor()} disabled>
+				<IconButton size="small" onClick={() => handleToggleEditor()}>
 					<ArrowForwardIosRoundedIcon />
 				</IconButton>
 			</Toolbar>
@@ -118,6 +136,7 @@ export const Editor = ({ handleChange }) => {
 				className="text-area"
 				placeholder="Start here..."
 				onChange={(e) => handleChange(e.target.value)}
+				defaultValue={textAreaValue}
 			/>
 		</div>
 	);

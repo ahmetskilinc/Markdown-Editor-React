@@ -2,10 +2,9 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
-import { ShowRawHtml, CheatSheet } from "./";
 import logo from "url:~/src/img/logo.png";
 
-export const Navbar = ({ markdownToParse }) => {
+export const HomeNavbar = () => {
 	return (
 		<AppBar position="static" elevation={0}>
 			<Toolbar>
@@ -13,8 +12,9 @@ export const Navbar = ({ markdownToParse }) => {
 					<img src={logo} height={15} />
 					Editor
 				</Typography>
+				{/* <SaveMdSheet markdownToSave={markdownToParse} />
 				<ShowRawHtml markdownToParse={markdownToParse} />
-				<CheatSheet />
+				<CheatSheet /> */}
 			</Toolbar>
 		</AppBar>
 	);

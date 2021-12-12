@@ -1,17 +1,15 @@
 import React, { useEffect } from "react";
-import {
-	Button,
-	Modal,
-	Card,
-	CardContent,
-	CardActions,
-	CardHeader,
-	IconButton,
-	Select,
-	FormControl,
-	InputLabel,
-	MenuItem,
-} from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import Modal from "@material-ui/core/Modal";
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import CardActions from "@material-ui/core/CardActions";
+import CardHeader from "@material-ui/core/CardHeader";
+import IconButton from "@material-ui/core/IconButton";
+import Select from "@material-ui/core/Select";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -21,6 +19,7 @@ import gfmHtml from "micromark-extension-gfm/html";
 import { MarkdownViewer } from "./";
 import DoneIcon from "@material-ui/icons/Done";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import RawHTML from "./RawHTML";
 
 const useStyles = makeStyles((theme) => ({
 	modal: {
@@ -31,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
 	},
 	root: {
 		width: 700,
+		maxHeight: "500px",
+		overflow: "scroll",
 	},
 }));
 
@@ -74,17 +75,7 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 		});
 
 		const res = markdownToParse
-			? `<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Document</title>
-	</head>
-	<body>
-		${parsed} 
-	</body>
-</html>`
+			? RawHTML(parsed)
 			: `Start by typing in the text box on the right.\nUse the cheat sheet if you need to!`;
 		setFileInner(res);
 		setResult(`\`\`\`html
@@ -107,19 +98,39 @@ ${res}
 				Show Raw File
 			</Button>
 			<div>
-				<Modal className={classes.modal} open={open} onClose={handleClose}>
+				<Modal
+					className={classes.modal}
+					open={open}
+					onClose={handleClose}
+				>
 					<Card className={classes.root}>
 						<CardHeader
 							action={
-								<IconButton aria-label="close" onClick={handleClose}>
+								<IconButton
+									aria-label="close"
+									onClick={handleClose}
+								>
 									<CancelIcon />
 								</IconButton>
 							}
 							title="Raw File"
 						/>
-						<CardContent style={{ padding: markdownToParse.length < 0 ? "16px" : "0 16px" }}>
+						<CardContent
+							style={{
+								maxHeigth: "500px",
+								overflow: "scroll",
+								padding:
+									markdownToParse.length < 0
+										? "16px"
+										: "0 16px",
+							}}
+						>
 							<MarkdownViewer
-								content={fileType === "html" ? result : markdownToParse}
+								content={
+									fileType === "html"
+										? result
+										: markdownToParse
+								}
 								lineNumbers={false}
 							/>
 						</CardContent>
@@ -132,19 +143,27 @@ ${res}
 									variant="outlined"
 									className={classes.formControl}
 								>
-									<InputLabel id="select-label">Download As</InputLabel>
+									<InputLabel id="select-label">
+										Download As
+									</InputLabel>
 									<Select
 										labelId="select-label"
 										value={fileType}
 										onChange={changeFileType}
 										label="Download as"
 									>
-										<MenuItem value={"html"}>.html</MenuItem>
+										<MenuItem value={"html"}>
+											.html
+										</MenuItem>
 										<MenuItem value={"md"}>.md</MenuItem>
 									</Select>
 								</FormControl>
 								<CopyToClipboard
-									text={fileType === "html" ? fileInner : markdownToParse}
+									text={
+										fileType === "html"
+											? fileInner
+											: markdownToParse
+									}
 									onCopy={() => setCopied(true)}
 								>
 									<Button

@@ -1,20 +1,22 @@
 import React from "react";
 import { useState } from "react";
-import { Editor, MarkdownViewer } from "../components";
+import { EditorNavbar, Editor, MarkdownViewer } from "../components";
 
-export const MarkdownEditor = ({ markdownToParse }) => {
+export const MarkdownEditor = () => {
 	const [markdown, setMarkdown] = useState(``);
 
 	const handleChange = (e) => {
 		setMarkdown(e);
-		markdownToParse(e);
 	};
 
 	return (
-		<div className="container">
-			<MarkdownViewer content={markdown} lineNumbers={true} />
-			<Editor handleChange={handleChange} />
-		</div>
+		<>
+			<EditorNavbar markdownToParse={markdown} />
+			<div className="container">
+				<MarkdownViewer content={markdown} lineNumbers={true} />
+				<Editor handleChange={handleChange} />
+			</div>
+		</>
 	);
 };
 
