@@ -42,8 +42,10 @@ export const MarkdownViewer = ({ content, lineNumbers }) => {
 	};
 	return (
 		<ReactMarkdown
-			className={`markdown-container ${lineNumbers ? "" : "zero-padding"}`}
-			renderers={renderers}
+			className={`markdown-container ${
+				lineNumbers ? "" : "zero-padding"
+			}`}
+			components={renderers}
 			plugins={[gfm]}
 			children={content}
 		/>

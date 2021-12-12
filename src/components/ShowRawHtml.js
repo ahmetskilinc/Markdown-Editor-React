@@ -13,9 +13,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CancelIcon from "@material-ui/icons/Cancel";
-import micromark from "micromark";
-import gfmSyntax from "micromark-extension-gfm";
-import gfmHtml from "micromark-extension-gfm/html";
+import { micromark } from "micromark";
+import { gfm, gfmHtml } from "micromark-extension-gfm";
 import { MarkdownViewer } from "./";
 import DoneIcon from "@material-ui/icons/Done";
 import { CopyToClipboard } from "react-copy-to-clipboard";
@@ -70,7 +69,7 @@ export const ShowRawHtml = ({ markdownToParse }) => {
 
 	useEffect(() => {
 		const parsed = micromark(markdownToParse, {
-			extensions: [gfmSyntax()],
+			extensions: [gfm()],
 			htmlExtensions: [gfmHtml],
 		});
 
