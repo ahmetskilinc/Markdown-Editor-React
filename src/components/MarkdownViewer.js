@@ -3,6 +3,7 @@ import gfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import rehypeRaw from "rehype-raw";
 import {
 	TableContainer,
 	Table,
@@ -45,6 +46,7 @@ export const MarkdownViewer = ({ content, lineNumbers }) => {
 			className={`markdown-container ${
 				lineNumbers ? "" : "zero-padding"
 			}`}
+			rehypePlugins={[rehypeRaw]}
 			components={renderers}
 			plugins={[gfm]}
 			children={content}
