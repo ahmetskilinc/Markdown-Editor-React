@@ -13,6 +13,7 @@ import FormatListBulletedRoundedIcon from "@material-ui/icons/FormatListBulleted
 import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
 import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
 import CheckBoxIcon from "@material-ui/icons/CheckBox";
+import { getSheetFromDb } from "../utils/db";
 
 const useStyles = makeStyles(() => ({
 	toolbar: {
@@ -42,6 +43,19 @@ export const Editor = ({ handleChange }) => {
 	const textArea = useRef();
 	const classes = useStyles();
 
+	useEffect(() => {
+		const id = window.location.pathname.split("/")[2];
+		getSheetFromDb(id)
+			.then((res) => {
+				if (res.file.length > 0) {
+					setTextAreaValue(res.file);
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}, []);
+
 	const handleToggleEditor = () => {
 		if (!hidden) setTextAreaValue(`${textArea.current.value}`);
 		setHidden(!hidden);
@@ -56,7 +70,7 @@ export const Editor = ({ handleChange }) => {
 			case "strikethrough":
 				return `~~${text}~~`;
 			case "checkbox":
-				return `[ ] ${text}`;
+				return `- [ ] ${text}`;
 		}
 	};
 

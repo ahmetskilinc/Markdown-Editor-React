@@ -3,5 +3,8 @@ export * from "./HomeNavbar";
 export * from "./CheatSheet";
 export * from "./ShowRawHtml";
 export * from "./SaveMdSheet";
+export * from "./OpenMdFile";
+export * from "./NewSheet";
 export * from "./Editor";
+export * from "./ListOfSheets";
 export * from "./MarkdownViewer";

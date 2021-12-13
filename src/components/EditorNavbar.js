@@ -4,15 +4,25 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import { ShowRawHtml, CheatSheet, SaveMdSheet } from ".";
 import logo from "url:~/src/img/logo.png";
+import { Link } from "react-router-dom";
 
 export const EditorNavbar = ({ markdownToParse }) => {
 	return (
 		<AppBar position="static" elevation={0}>
 			<Toolbar>
-				<Typography style={{ flexGrow: 1 }} variant="h6">
-					<img src={logo} height={15} />
-					Editor
-				</Typography>
+				<Link
+					to="/"
+					style={{
+						flexGrow: 1,
+						color: "#ffffff",
+						textDecoration: "none",
+					}}
+				>
+					<Typography variant="h6">
+						<img src={logo} height={15} />
+						Editor
+					</Typography>
+				</Link>
 				<SaveMdSheet markdownToSave={markdownToParse} />
 				<ShowRawHtml markdownToParse={markdownToParse} />
 				<CheatSheet />

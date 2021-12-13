@@ -1,11 +1,11 @@
 import React from "react";
-import { HomeNavbar } from "../components";
+import { HomeNavbar, ListOfSheets } from "../components";
 
 export const Sheets = () => {
 	return (
 		<>
 			<HomeNavbar />
-			<div>List of sheets</div>
+			<ListOfSheets />
 		</>
 	);
 };

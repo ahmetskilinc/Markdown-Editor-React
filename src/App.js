@@ -1,5 +1,5 @@
 import React from "react";
-import { MarkdownEditor, Sheets } from "./pages";
+import { MarkdownEditor, Sheets, NewFile } from "./pages";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import "./App.css";
 
@@ -9,7 +9,9 @@ export const App = () => {
 			<Routes>
 				<Route path="/" element={<Sheets />} />
 				<Route path="/editor/:id" element={<MarkdownEditor />} />
+				<Route path="/new" element={<NewFile />} />
 			</Routes>
 		</BrowserRouter>
+		// <MarkdownEditor />
 	);
 };
